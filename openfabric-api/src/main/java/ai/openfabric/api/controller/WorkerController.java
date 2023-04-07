@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${node.api.path}/worker")
@@ -20,8 +21,15 @@ public class WorkerController {
     }
 
     @GetMapping(path = "/list")
-    public @ResponseBody String listContainers() {
-        return gson.toJson(dockerClient.listContainersCmd().exec());
+    public @ResponseBody String listContainers(@RequestParam(defaultValue = "1") int page,
+                                               @RequestParam(defaultValue = "10") int pageSize) {
+        return gson.toJson(dockerClient.listContainersCmd()
+                .withShowAll(true)
+                .exec()
+                .stream()
+                .skip((long) (page - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/start")
@@ -49,9 +57,9 @@ public class WorkerController {
             stats = callback.awaitResult();
             callback.close();
         } catch (RuntimeException | IOException e) {
-            // you may want to throw an exception here
+            //
         }
-        return gson.toJson(stats); // this may be null or invalid if the container has terminated
+        return gson.toJson(stats); // null or invalid if the container has terminated
 
     }
 
