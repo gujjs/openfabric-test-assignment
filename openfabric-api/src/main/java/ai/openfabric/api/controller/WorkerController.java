@@ -32,12 +32,12 @@ public class WorkerController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping(path = "/start")
+    @PostMapping(path = "/start")
     public @ResponseBody String startContainer(@RequestParam String containerId) {
         return gson.toJson(dockerClient.startContainerCmd(containerId).exec());
     }
 
-    @GetMapping(path = "/stop")
+    @PostMapping(path = "/stop")
     public @ResponseBody String stopContainer(@RequestParam String containerId) {
         return gson.toJson(dockerClient.stopContainerCmd(containerId).exec());
     }
