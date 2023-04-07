@@ -1,6 +1,7 @@
 package ai.openfabric.api.model;
 
 
+import com.github.dockerjava.api.model.Container;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 
 @Entity()
 public class Worker extends Datable implements Serializable {
+    public final Container container;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "of-uuid")
@@ -23,5 +25,14 @@ public class Worker extends Datable implements Serializable {
 
     public String name;
 
+    protected Worker() {
+        this.container = null;
+    }
+
+    protected Worker(Container container) {
+        this.container = container;
+
+        this.name = container.getId();
+    }
 
 }
