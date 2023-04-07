@@ -27,6 +27,11 @@ You are free to use any package or library you see feet as long as you follow th
 
 ## Run
 
+
+1. `docker run --name postgresql-container -p 5432:5432 -e POSTGRES_PASSWORD=9c231a1c61a5fe322dd1 -e POSTGRES_USER=openfabric -e POSTGRES_DB=test -d postgres`
+2. `./gradlew build`
+3. `java -jar openfabric-api/build/libs/openfabric-api-1.0.0-SNAPSHOT.jar`
+
 Once you have established a connection to the database, you can test the application by using Swagger.
 
 You can access Swagger by navigating to the following link: http://localhost:8080/swagger-ui/#/.
